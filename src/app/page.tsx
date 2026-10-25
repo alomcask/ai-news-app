@@ -24,6 +24,9 @@ export default function Home() {
           <h1 className="text-xl font-semibold">AI 뉴스 수집</h1>
           <UserButton />
         </header>
+        <main className="flex flex-1 items-center justify-center p-8">
+          <h2 className="text-3xl font-semibold">환영합니다</h2>
+        </main>
       </Show>
     </Suspense>
   );
