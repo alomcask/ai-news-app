@@ -1,31 +1,34 @@
 import { Suspense } from "react";
-import { Show, SignInButton, UserButton } from "@clerk/nextjs";
+import Link from "next/link";
+import { Show, UserButton } from "@clerk/nextjs";
+import { NewsList, NewsListSkeleton } from "@/components/news-list";
 
 export default function Home() {
   return (
     <Suspense>
-      <Show
-        when="signed-in"
-        fallback={
-          <main className="flex flex-1 flex-col items-center justify-center gap-6 p-8 text-center">
-            <h1 className="text-3xl font-semibold">AI 뉴스 수집</h1>
-            <p className="text-zinc-600 dark:text-zinc-400">
-              로그인 후 이용할 수 있습니다.
-            </p>
-            <SignInButton mode="modal">
-              <button className="h-12 rounded-full bg-foreground px-6 font-medium text-background">
-                로그인
-              </button>
-            </SignInButton>
-          </main>
-        }
-      >
-        <header className="flex items-center justify-between p-4">
-          <h1 className="text-xl font-semibold">AI 뉴스 수집</h1>
-          <UserButton />
+      <Show when="signed-out">
+        <main className="flex flex-1 flex-col items-center justify-center gap-6 p-8 text-center">
+          <h1 className="text-3xl font-semibold">AI 뉴스 수집</h1>
+          <p className="text-muted">로그인 후 이용할 수 있습니다.</p>
+          <Link
+            href="/sign-in"
+            className="flex h-12 items-center rounded-full bg-brand px-6 font-medium text-white hover:bg-brand-strong"
+          >
+            로그인
+          </Link>
+        </main>
+      </Show>
+      <Show when="signed-in">
+        <header className="sticky top-0 z-10 border-b border-border bg-surface/80 backdrop-blur">
+          <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+            <h1 className="text-xl font-bold text-brand">AI 뉴스 수집</h1>
+            <UserButton />
+          </div>
         </header>
-        <main className="flex flex-1 items-center justify-center p-8">
-          <h2 className="text-3xl font-semibold">환영합니다</h2>
+        <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
+          <Suspense fallback={<NewsListSkeleton />}>
+            <NewsList />
+          </Suspense>
         </main>
       </Show>
     </Suspense>

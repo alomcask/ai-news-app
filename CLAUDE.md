@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 `PRD.md` (Korean) is the source of truth for requirements, data model, and the 6-step implementation order. Only the Next.js scaffold and dependencies are installed so far; no app code has been written yet (`src/app` is still the create-next-app template). Check `PRD.md` before implementing any feature.
 
+`ui.md` (Korean) is the UI guide (Tailwind tokens, dashboard layout, category bar, Usagi mascot cards). Read it before writing or changing any UI.
+
 ## Commands
 
 ```bash
