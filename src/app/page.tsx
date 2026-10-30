@@ -1,9 +1,10 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { Show, UserButton } from "@clerk/nextjs";
+import { FetchNewsButton } from "@/components/fetch-news-button";
 import { NewsList, NewsListSkeleton } from "@/components/news-list";
 
-export default function Home() {
+export default function Home({ searchParams }: PageProps<"/">) {
   return (
     <Suspense>
       <Show when="signed-out">
@@ -27,7 +28,8 @@ export default function Home() {
         </header>
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
           <Suspense fallback={<NewsListSkeleton />}>
-            <NewsList />
+            <FetchNewsButton />
+            <NewsList basePath="/" searchParams={searchParams} />
           </Suspense>
         </main>
       </Show>

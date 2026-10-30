@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
+import { FetchNewsButton } from "@/components/fetch-news-button";
 import { NewsList, NewsListSkeleton } from "@/components/news-list";
 
 export const metadata: Metadata = {
@@ -15,7 +16,7 @@ async function RequireSignIn({ children }: { children: React.ReactNode }) {
   return children;
 }
 
-export default function DashboardPage() {
+export default function DashboardPage({ searchParams }: PageProps<"/dashboard">) {
   return (
     <>
       <header className="sticky top-0 z-10 border-b border-border bg-surface/80 backdrop-blur">
@@ -27,7 +28,8 @@ export default function DashboardPage() {
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
         <Suspense fallback={<NewsListSkeleton />}>
           <RequireSignIn>
-            <NewsList />
+            <FetchNewsButton />
+            <NewsList basePath="/dashboard" searchParams={searchParams} />
           </RequireSignIn>
         </Suspense>
       </main>
