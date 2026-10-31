@@ -1,4 +1,5 @@
 import type { Article } from "@/db/schema";
+import { SaveNewsButton } from "./save-news-button";
 
 type NewsCardProps = {
   article: Article;
@@ -32,6 +33,7 @@ export function NewsCard({ article, categoryName }: NewsCardProps) {
         </a>
       </h2>
       <p className="text-sm leading-relaxed text-muted">{article.summaryKo}</p>
+      <SaveNewsButton articleId={article.id} notionPageUrl={article.notionPageUrl} />
       <div className="mt-auto flex flex-col gap-1 border-t border-border pt-3 text-xs text-muted">
         <span className="line-clamp-1">{article.titleOriginal}</span>
         {article.publishedAt && (
