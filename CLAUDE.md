@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-`PRD.md` (Korean) is the source of truth for requirements, data model, and the 6-step implementation order. Only the Next.js scaffold and dependencies are installed so far; no app code has been written yet (`src/app` is still the create-next-app template). Check `PRD.md` before implementing any feature.
+`PRD.md` (Korean) is the source of truth for requirements, data model, and the 6-step implementation order. Steps 1–3 are implemented (Clerk login, Drizzle schema, RSS fetch + Claude translate/summarize/categorize via `fetchNewsAction`); the card list has pagination but no category filter yet (step 4), and category CRUD (5) and Notion save (6) are not started. Check `PRD.md` before implementing any feature.
 
 `ui.md` (Korean) is the UI guide (Tailwind tokens, dashboard layout, category bar, Usagi mascot cards). Read it before writing or changing any UI.
 
@@ -15,7 +15,7 @@ npm run dev      # next dev
 npm run build    # next build
 npm run start    # next start
 npm run lint     # eslint (flat config, eslint.config.mjs)
-npx drizzle-kit  # migrations (drizzle-kit is installed; no drizzle.config yet)
+npx drizzle-kit  # migrations (config in drizzle.config.ts, output in ./drizzle)
 ```
 
 No test runner is configured.

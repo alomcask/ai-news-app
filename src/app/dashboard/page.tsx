@@ -3,8 +3,12 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { UserButton } from "@clerk/nextjs";
+import { CategoryBar } from "@/components/category-bar";
 import { FetchNewsButton } from "@/components/fetch-news-button";
 import { NewsList, NewsListSkeleton } from "@/components/news-list";
+
+// "뉴스 가져오기" 서버 액션이 Claude를 여러 번 호출하므로 기본 타임아웃을 늘린다.
+export const maxDuration = 60;
 
 export const metadata: Metadata = {
   title: "대시보드 | AI 뉴스 수집기",
@@ -22,13 +26,16 @@ export default function DashboardPage({ searchParams }: PageProps<"/dashboard">)
       <header className="sticky top-0 z-10 border-b border-border bg-surface/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <h1 className="text-xl font-bold text-brand">AI 뉴스 수집기</h1>
-          <UserButton />
+          <div className="flex items-center gap-3">
+            <FetchNewsButton />
+            <UserButton />
+          </div>
         </div>
       </header>
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">
         <Suspense fallback={<NewsListSkeleton />}>
           <RequireSignIn>
-            <FetchNewsButton />
+            <CategoryBar basePath="/dashboard" searchParams={searchParams} />
             <NewsList basePath="/dashboard" searchParams={searchParams} />
           </RequireSignIn>
         </Suspense>

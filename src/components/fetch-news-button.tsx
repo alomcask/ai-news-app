@@ -15,16 +15,18 @@ export function FetchNewsButton() {
         setMessage({ text: result.error, isError: true });
         return;
       }
-      const partial =
-        result.failedSources.length > 0
-          ? ` (${result.failedSources.join(", ")} 실패)`
-          : "";
+      const notes = [
+        result.failedSources.length > 0 && `${result.failedSources.join(", ")} 실패`,
+        result.failedCount > 0 && `처리 실패 ${result.failedCount}건`,
+        result.skippedCount > 0 && `다음 실행으로 이월 ${result.skippedCount}건`,
+      ].filter(Boolean);
+      const partial = notes.length > 0 ? ` (${notes.join(", ")})` : "";
       setMessage({ text: `신규 ${result.newCount}건 추가${partial}`, isError: false });
     });
   }
 
   return (
-    <div className="mb-6 flex flex-wrap items-center gap-3">
+    <div className="relative">
       <button
         type="button"
         onClick={handleClick}
@@ -35,7 +37,9 @@ export function FetchNewsButton() {
       </button>
       <p
         role="status"
-        className={`text-sm ${message?.isError ? "text-foreground" : "text-muted"}`}
+        className={`absolute right-0 top-full mt-2 w-max max-w-[min(20rem,calc(100vw-2rem))] rounded-xl border border-border bg-surface px-3 py-1.5 text-xs shadow-sm ${
+          message ? "" : "hidden"
+        } ${message?.isError ? "text-foreground" : "text-muted"}`}
       >
         {message?.isError && "⚠️ "}
         {message?.text}

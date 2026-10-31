@@ -4,6 +4,8 @@ type PaginationProps = {
   basePath: string;
   page: number;
   totalPages: number;
+  // 페이지 링크에 유지할 추가 쿼리(예: category)
+  params?: Record<string, string>;
 };
 
 const baseClass =
@@ -12,8 +14,11 @@ const idleClass = `${baseClass} border-border bg-surface text-muted hover:border
 const currentClass = `${baseClass} border-brand bg-brand text-white`;
 const disabledClass = `${baseClass} border-border bg-surface text-muted opacity-50`;
 
-function pageHref(basePath: string, page: number) {
-  return page === 1 ? basePath : `${basePath}?page=${page}`;
+function pageHref(basePath: string, page: number, params?: Record<string, string>) {
+  const query = new URLSearchParams(params);
+  if (page > 1) query.set("page", String(page));
+  const qs = query.toString();
+  return qs ? `${basePath}?${qs}` : basePath;
 }
 
 // 현재 페이지 주변 5개만 보여 주고, 처음/끝 페이지는 항상 포함한다.
@@ -32,7 +37,7 @@ function visiblePages(page: number, totalPages: number): (number | "gap")[] {
   return result;
 }
 
-export function Pagination({ basePath, page, totalPages }: PaginationProps) {
+export function Pagination({ basePath, page, totalPages, params }: PaginationProps) {
   if (totalPages <= 1) return null;
 
   return (
@@ -41,7 +46,7 @@ export function Pagination({ basePath, page, totalPages }: PaginationProps) {
       className="mt-8 flex flex-wrap items-center justify-center gap-2"
     >
       {page > 1 ? (
-        <Link href={pageHref(basePath, page - 1)} className={idleClass}>
+        <Link href={pageHref(basePath, page - 1, params)} className={idleClass}>
           이전
         </Link>
       ) : (
@@ -57,7 +62,7 @@ export function Pagination({ basePath, page, totalPages }: PaginationProps) {
         ) : (
           <Link
             key={p}
-            href={pageHref(basePath, p)}
+            href={pageHref(basePath, p, params)}
             aria-current={p === page ? "page" : undefined}
             className={p === page ? currentClass : idleClass}
           >
@@ -66,7 +71,7 @@ export function Pagination({ basePath, page, totalPages }: PaginationProps) {
         ),
       )}
       {page < totalPages ? (
-        <Link href={pageHref(basePath, page + 1)} className={idleClass}>
+        <Link href={pageHref(basePath, page + 1, params)} className={idleClass}>
           다음
         </Link>
       ) : (
